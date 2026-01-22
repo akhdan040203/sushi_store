@@ -136,7 +136,7 @@
         <h3>Receive unique promotions<br>and coupons emails</h3>
         <form class="newsletter-form">
             <input type="email" placeholder="your@gmail.com">
-            <button type="submit">SUBSCRIBE</button>
+            <button type="submit" class="mt-5 hover:bg-orange-500">SUBSCRIBE</button>
         </form>
     </section>
 </x-store-layout>
