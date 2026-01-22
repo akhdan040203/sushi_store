@@ -44,7 +44,7 @@
     <!-- Popular Dishes Section -->
     <section class="popular-dishes">
         <div class="section-title">
-            <h2>POPULAR DISHES</h2>
+            <h2>BEST SELLER</h2>
         </div>
         
         <div class="dishes-grid">
