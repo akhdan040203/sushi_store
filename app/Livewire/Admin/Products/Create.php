@@ -4,10 +4,12 @@ namespace App\Livewire\Admin\Products;
 
 use App\Models\Product;
 use App\Models\Category;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Str;
 
+#[Layout('components.admin-layout')]
 class Create extends Component
 {
     use WithFileUploads;
@@ -19,13 +21,14 @@ class Create extends Component
     public $image;
     public $stock = 0;
     public $is_featured = false;
+    public $is_active = true;
 
     protected $rules = [
         'category_id' => 'required|exists:categories,id',
         'name' => 'required|string|min:3',
         'description' => 'nullable|string',
         'price' => 'required|numeric|min:0',
-        'image' => 'required|image|max:2048', // 2MB Max
+        'image' => 'required|image|max:2048',
         'stock' => 'required|integer|min:0',
     ];
 
@@ -44,9 +47,10 @@ class Create extends Component
             'image' => 'storage/' . $imagePath,
             'stock' => $this->stock,
             'is_featured' => $this->is_featured,
+            'is_active' => $this->is_active,
         ]);
 
-        session()->flash('message', 'Produk berhasil ditambahkan.');
+        session()->flash('message', 'Product added successfully.');
         return redirect()->route('admin.products.index');
     }
 

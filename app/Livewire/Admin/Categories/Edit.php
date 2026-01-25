@@ -3,9 +3,11 @@
 namespace App\Livewire\Admin\Categories;
 
 use App\Models\Category;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Illuminate\Support\Str;
 
+#[Layout('components.admin-layout')]
 class Edit extends Component
 {
     public $categoryId;
@@ -41,7 +43,6 @@ class Edit extends Component
 
     public function update()
     {
-        // Unique validation excluding current category
         $this->validate([
             'name' => 'required|min:3|unique:categories,name,' . $this->categoryId,
             'slug' => 'required|unique:categories,slug,' . $this->categoryId,
@@ -63,6 +64,6 @@ class Edit extends Component
 
     public function render()
     {
-        return view('livewire.admin.categories.edit')->layout('layouts.app');
+        return view('livewire.admin.categories.edit');
     }
 }

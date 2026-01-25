@@ -290,6 +290,19 @@
         <p>Complete your order to enjoy our fresh sushi</p>
     </div>
 
+    <div class="checkout-container" style="grid-column: 1 / -1; margin-bottom: 2rem;">
+        @if (session()->has('error'))
+            <div style="background: rgba(239,68,68,0.15); border-left: 4px solid #EF4444; color: #EF4444; padding: 1rem; border-radius: 12px; margin-bottom: 1rem;">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if (session()->has('success'))
+            <div style="background: rgba(34,197,94,0.15); border-left: 4px solid #22C55E; color: #22C55E; padding: 1rem; border-radius: 12px; margin-bottom: 1rem;">
+                {{ session('success') }}
+            </div>
+        @endif
+    </div>
+
     <div class="checkout-container">
         <!-- Main Form -->
         <div class="checkout-main">
@@ -366,14 +379,14 @@
                     <span>Rp {{ number_format($subtotal * 1.1, 0, ',', '.') }}</span>
                 </div>
 
-                <button class="checkout-btn" wire:click="attemptPayment">
-                    Place Order
+                <button class="checkout-btn" wire:click="attemptPayment" wire:loading.attr="disabled">
+                    <span wire:loading.remove>Place Order</span>
+                    <span wire:loading>Processing...</span>
                 </button>
             </div>
         </aside>
     </div>
 
-    <!-- Promo Upselling Modal -->
     @if($showPromoModal)
     <div class="modal-overlay">
         <div class="promo-modal">
@@ -383,9 +396,47 @@
             
             <div class="promo-actions">
                 <a href="{{ route('register') }}" class="login-promo-btn">DAFTAR SEKARANG & AMBIL BONUS</a>
-                <button class="guest-promo-btn" wire:click="processOrder">Tetap Bayar sebagai Tamu</button>
+                <button class="guest-promo-btn" wire:click="processOrder" wire:loading.attr="disabled">
+                    <span wire:loading.remove wire:target="processOrder">Tetap Bayar sebagai Tamu</span>
+                    <span wire:loading wire:target="processOrder">Processing...</span>
+                </button>
             </div>
         </div>
     </div>
     @endif
+
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
+    <script>
+        window.addEventListener('payment-ready', event => {
+            console.log('Payment ready event received!', event.detail);
+            const data = event.detail[0];
+            
+            if (!data.snapToken) {
+                console.error('No snap token found!');
+                alert('Internal Error: Snap Token missing.');
+                return;
+            }
+
+            snap.pay(data.snapToken, {
+                onSuccess: function(result) {
+                    console.log('Payment success:', result);
+                    window.location.href = "/orders/track/" + data.orderNumber;
+                },
+                onPending: function(result) {
+                    console.log('Payment pending:', result);
+                    window.location.href = "/orders/track/" + data.orderNumber;
+                },
+                onError: function(result) {
+                    console.error('Payment error:', result);
+                    alert("Payment failed!");
+                },
+                onClose: function() {
+                    console.log('Customer closed the popup');
+                    alert('You closed the popup without finishing the payment');
+                }
+            });
+        });
+    </script>
 </div>
+
+

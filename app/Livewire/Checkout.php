@@ -9,6 +9,8 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 class Checkout extends Component
 {
@@ -18,6 +20,8 @@ class Checkout extends Component
     public $showPromoModal = false;
     public $cartItems = [];
     public $subtotal = 0;
+    public $snapToken = null;
+
 
     public function mount()
     {
@@ -87,46 +91,62 @@ class Checkout extends Component
                 'table_number' => $this->order_type === 'dine_in' ? $this->table_number : null,
                 'status' => 'pending',
                 'subtotal' => $this->subtotal,
-                'total' => $this->subtotal, // Simple total for now
+                'total' => $this->subtotal * 1.1, // Include 10% Tax
                 'payment_status' => 'pending',
             ]);
 
             foreach ($this->cartItems as $item) {
                 OrderItem::create([
                     'order_id' => $order->id,
-                    'product_id' => Auth::check() ? $item->product_id : $item->product_id,
+                    'product_id' => $item->product_id,
                     'quantity' => $item->quantity,
                     'price' => $item->product->effective_price,
                     'subtotal' => $item->quantity * $item->product->effective_price,
                 ]);
 
-                // Update stock
-                $item->product->decrement('stock', $item->quantity);
+                // Decrement Stock
+                Product::where('id', $item->product_id)->decrement('stock', $item->quantity);
             }
 
-            // Clear cart
+            $order->update(['stock_decremented' => true]);
+
+            // Midtrans Configuration
+            Config::$serverKey = config('midtrans.server_key');
+            Config::$isProduction = config('midtrans.is_production');
+            Config::$isSanitized = config('midtrans.is_sanitized');
+            Config::$is3ds = config('midtrans.is_3ds');
+
+            $params = [
+                'transaction_details' => [
+                    'order_id' => $order->order_number,
+                    'gross_amount' => (int) $order->total,
+                ],
+                'customer_details' => [
+                    'first_name' => $this->customer_name,
+                    'email' => Auth::check() ? Auth::user()->email : 'guest@example.com',
+                ],
+            ];
+
+            $this->snapToken = Snap::getSnapToken($params);
+
+            DB::commit();
+
+            // Clear cart early (optional, or wait for success)
             if (Auth::check()) {
                 Cart::where('user_id', Auth::id())->delete();
             } else {
                 session()->forget('cart');
             }
 
-            DB::commit();
-            
             $this->dispatch('cartUpdated');
-            session()->flash('success', 'Pesanan Anda berhasil dikirim! Silakan tunggu di meja.');
-            
-            if (Auth::check() && Auth::user()->isAdmin()) {
-                return redirect()->to('/dashboard');
-            } else {
-                return redirect()->to('/items');
-            }
-            
+            $this->dispatch('payment-ready', ['snapToken' => $this->snapToken, 'orderNumber' => $order->order_number]);
+
         } catch (\Exception $e) {
             DB::rollBack();
             session()->flash('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+
 
     public function render()
     {

@@ -3,9 +3,11 @@
 namespace App\Livewire\Admin\Categories;
 
 use App\Models\Category;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Illuminate\Support\Str;
 
+#[Layout('components.admin-layout')]
 class Create extends Component
 {
     public $name;
@@ -46,6 +48,6 @@ class Create extends Component
 
     public function render()
     {
-        return view('livewire.admin.categories.create')->layout('layouts.app');
+        return view('livewire.admin.categories.create');
     }
 }

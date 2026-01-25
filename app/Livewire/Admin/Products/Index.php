@@ -3,9 +3,11 @@
 namespace App\Livewire\Admin\Products;
 
 use App\Models\Product;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+#[Layout('components.admin-layout')]
 class Index extends Component
 {
     use WithPagination;
@@ -27,6 +29,7 @@ class Index extends Component
     public function render()
     {
         $products = Product::where('name', 'like', '%' . $this->search . '%')
+            ->with('category')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 

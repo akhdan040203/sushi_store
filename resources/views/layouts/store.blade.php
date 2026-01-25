@@ -31,6 +31,9 @@
             <li><a href="/items">ITEMS</a></li>
             <li><a href="/#services">SERVICES</a></li>
             <li><a href="/about">ABOUT US</a></li>
+            @auth
+                <li><a href="{{ route('orders.history') }}">MY ORDERS</a></li>
+            @endauth
         </ul>
         
         <div class="nav-icons">
@@ -72,6 +75,9 @@
             <li><a href="/items" onclick="toggleMobileMenu()">ITEMS</a></li>
             <li><a href="/#services" onclick="toggleMobileMenu()">SERVICES</a></li>
             <li><a href="/about" onclick="toggleMobileMenu()">ABOUT US</a></li>
+            @auth
+                <li><a href="{{ route('orders.history') }}" onclick="toggleMobileMenu()">MY ORDERS</a></li>
+            @endauth
         </ul>
         <div class="mobile-menu-footer">
             @if (Route::has('login'))
@@ -160,6 +166,8 @@
             }
         }
     </script>
+
+
     @livewireScripts
 </body>
 </html>

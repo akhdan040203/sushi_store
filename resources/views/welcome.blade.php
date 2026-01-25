@@ -2,7 +2,7 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h1>Discover the Ultimate Sushi Experience</h1>
+            <h1 class="font-semibold">Discover the Ultimate Sushi Experience</h1>
             <p>Pure Sushi Experience<br>Focusing on Premium Quality Ingredients</p>
             <div class="hero-buttons">
                 <a href="/items" class="btn btn-outline">Check menu</a>
@@ -90,11 +90,12 @@
         <div class="menu-categories">
             @foreach($categories as $category)
             <button class="category-btn {{ $loop->first ? 'active' : '' }}">
-                <span style="font-size: 1.2rem;">{{ $category->icon }}</span>
+                <x-category-icon :slug="$category->slug" size="22" />
                 {{ $category->name }}
             </button>
             @endforeach
         </div>
+
         
         <h3 class="category-title">SUSHI</h3>
         

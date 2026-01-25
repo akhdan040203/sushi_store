@@ -24,6 +24,7 @@ class Order extends Model
         'shipping_postal_code',
         'payment_method',
         'payment_status',
+        'stock_decremented',
         'notes',
     ];
 

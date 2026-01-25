@@ -4,11 +4,13 @@ namespace App\Livewire\Admin\Products;
 
 use App\Models\Product;
 use App\Models\Category;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
+#[Layout('components.admin-layout')]
 class Edit extends Component
 {
     use WithFileUploads;
@@ -22,6 +24,7 @@ class Edit extends Component
     public $new_image;
     public $stock;
     public $is_featured;
+    public $is_active;
 
     public function mount($id)
     {
@@ -33,6 +36,7 @@ class Edit extends Component
         $this->price = $this->product->price;
         $this->stock = $this->product->stock;
         $this->is_featured = $this->product->is_featured;
+        $this->is_active = $this->product->is_active;
     }
 
     protected function rules()
@@ -59,10 +63,10 @@ class Edit extends Component
             'price' => $this->price,
             'stock' => $this->stock,
             'is_featured' => $this->is_featured,
+            'is_active' => $this->is_active,
         ];
 
         if ($this->new_image) {
-            // Delete old image if not demo image
             if (!str_contains($this->product->image, 'images/products/')) {
                 $oldPath = str_replace('storage/', '', $this->product->image);
                 Storage::disk('public')->delete($oldPath);
@@ -74,7 +78,7 @@ class Edit extends Component
 
         $this->product->update($data);
 
-        session()->flash('message', 'Produk berhasil diperbarui.');
+        session()->flash('message', 'Product updated successfully.');
         return redirect()->route('admin.products.index');
     }
 

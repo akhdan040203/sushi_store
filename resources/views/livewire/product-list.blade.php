@@ -325,7 +325,7 @@
                     @foreach($categories as $category)
                     <li class="category-item">
                         <a wire:click="selectCategory({{ $category->id }})" class="category-link {{ $selectedCategory == $category->id ? 'active' : '' }}">
-                            <span>{{ $category->icon }} {{ $category->name }}</span>
+                            <span style="display: flex; align-items: center; gap: 0.5rem;"><x-category-icon :slug="$category->slug" size="18" /> {{ $category->name }}</span>
                             <span class="count-badge">{{ $category->products_count }}</span>
                         </a>
                     </li>
@@ -341,7 +341,7 @@
                 <select class="mobile-filter-select" wire:model.live="selectedCategory">
                     <option value="">All Categories</option>
                     @foreach($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->icon }} {{ $category->name }} ({{ $category->products_count }})</option>
+                    <option value="{{ $category->id }}">{{ $category->name }} ({{ $category->products_count }})</option>
                     @endforeach
                 </select>
             </div>

@@ -1,67 +1,97 @@
-<div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">Daftar Produk Sushi</h2>
-                <a href="{{ route('admin.products.create') }}" class="inline-flex items-center px-4 py-2 bg-orange-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-orange-700 active:bg-orange-800 focus:outline-none focus:border-orange-900 focus:ring ring-orange-300 disabled:opacity-25 transition ease-in-out duration-150">
-                    Tambah Produk
-                </a>
+<div>
+    <div class="top-bar">
+        <div class="page-title">
+            <h1>Products</h1>
+            <p>Manage your sushi products inventory</p>
+        </div>
+        <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
+    </div>
+
+    <div class="admin-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <div style="position: relative; width: 300px;">
+                <input wire:model.live="search" type="text" placeholder="Search products..." class="form-input" style="padding-left: 2.5rem;">
+                <svg style="position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: rgba(255,255,255,0.4);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
             </div>
+            <a href="{{ route('admin.products.create') }}" class="btn-primary">
+                <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+                Add Product
+            </a>
+        </div>
 
-            @if (session()->has('message'))
-                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6" role="alert">
-                    <p>{{ session('message') }}</p>
-                </div>
-            @endif
-
-            <div class="mb-4">
-                <input wire:model.live="search" type="text" placeholder="Cari produk..." class="w-full md:w-1/3 rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50">
+        @if (session()->has('message'))
+            <div style="background: rgba(34,197,94,0.15); border-left: 4px solid #22C55E; color: #22C55E; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                {{ session('message') }}
             </div>
+        @endif
 
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-widest">Gambar</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-widest">Nama</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-widest">Harga</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-widest">Stok</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-widest">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        @forelse($products as $product)
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="h-10 w-10 rounded-full object-cover">
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="text-sm font-medium text-gray-900">{{ $product->name }}</div>
-                                    <div class="text-sm text-gray-500">{{ $product->category->name }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $product->stock }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <a href="{{ route('admin.products.edit', $product->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
-                                    <button wire:click="delete({{ $product->id }})" wire:confirm="Apakah Anda yakin ingin menghapus produk ini?" class="text-red-600 hover:text-red-900">Hapus</button>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="px-6 py-4 text-center text-gray-500">Tidak ada produk ditemukan.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Status</th>
+                    <th style="text-align: right;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($products as $product)
+                    <tr>
+                        <td>
+                            <img src="{{ asset($product->image ?? 'images/placeholder.png') }}" alt="{{ $product->name }}" style="width: 50px; height: 50px; border-radius: 10px; object-fit: cover;">
+                        </td>
+                        <td>
+                            <div style="font-weight: 600;">{{ $product->name }}</div>
+                            <div style="color: rgba(255,255,255,0.5); font-size: 0.8rem;">{{ Str::limit($product->description, 40) }}</div>
+                        </td>
+                        <td>
+                            <span style="background: rgba(255,122,0,0.15); color: #FF7A00; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem;">
+                                {{ $product->category->name ?? 'Uncategorized' }}
+                            </span>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600; color: #22C55E;">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
+                        </td>
+                        <td>
+                            @if($product->stock < 10)
+                                <span class="badge badge-danger">{{ $product->stock }} left</span>
+                            @else
+                                <span class="badge badge-success">{{ $product->stock }}</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if($product->is_active)
+                                <span class="badge badge-success">Active</span>
+                            @else
+                                <span class="badge badge-danger">Inactive</span>
+                            @endif
+                        </td>
+                        <td style="text-align: right;">
+                            <a href="{{ route('admin.products.edit', $product->id) }}" class="link-edit" style="margin-right: 1rem;">Edit</a>
+                            <button wire:click="delete({{ $product->id }})" wire:confirm="Are you sure you want to delete this product?" class="link-delete">Delete</button>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="7" style="text-align: center; color: rgba(255,255,255,0.5); padding: 3rem;">
+                            No products found. Create your first product!
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
 
-            <div class="mt-6">
+        @if($products->hasPages())
+            <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05);">
                 {{ $products->links() }}
             </div>
-        </div>
+        @endif
     </div>
 </div>
