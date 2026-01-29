@@ -43,7 +43,6 @@ class ProductSeeder extends Seeder
                 'stock' => 50,
                 'rating' => 4.5,
                 'rating_count' => 120,
-                'is_featured' => true,
             ],
             [
                 'category_id' => $rollsCat->id,
@@ -55,7 +54,6 @@ class ProductSeeder extends Seeder
                 'stock' => 30,
                 'rating' => 4.7,
                 'rating_count' => 85,
-                'is_featured' => true,
             ],
             [
                 'category_id' => $rollsCat->id,
@@ -67,7 +65,6 @@ class ProductSeeder extends Seeder
                 'stock' => 25,
                 'rating' => 4.9,
                 'rating_count' => 60,
-                'is_featured' => true,
             ],
             [
                 'category_id' => $rollsCat->id,
@@ -90,7 +87,6 @@ class ProductSeeder extends Seeder
                 'stock' => 45,
                 'rating' => 4.8,
                 'rating_count' => 110,
-                'is_featured' => true,
             ],
             // Sushi/Nigiri/Sashimi
             [
