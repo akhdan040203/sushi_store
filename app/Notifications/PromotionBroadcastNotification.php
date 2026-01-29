@@ -14,15 +14,17 @@ class PromotionBroadcastNotification extends Notification
     protected $messageTitle;
     protected $messageBody;
     protected $actionUrl;
+    protected $imageUrl;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($title, $body, $actionUrl = null)
+    public function __construct($title, $body, $actionUrl = null, $imageUrl = null)
     {
         $this->messageTitle = $title;
         $this->messageBody = $body;
         $this->actionUrl = $actionUrl;
+        $this->imageUrl = $imageUrl;
     }
 
     /**
@@ -40,18 +42,15 @@ class PromotionBroadcastNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $mail = (new MailMessage)
+        return (new MailMessage)
             ->subject($this->messageTitle)
-            ->greeting('Special Promotion for ' . $notifiable->name . '!')
-            ->line($this->messageBody);
-            
-        if ($this->actionUrl) {
-            $mail->action('Check Product', url($this->actionUrl));
-        } else {
-            $mail->action('Order Now', url('/items'));
-        }
-
-        return $mail->line('Thank you for being our loyal customer! Enjoy your sushi.');
+            ->markdown('mail.promotion', [
+                'title' => $this->messageTitle,
+                'body' => $this->messageBody,
+                'image' => $this->imageUrl ? asset('storage/' . $this->imageUrl) : null,
+                'url' => $this->actionUrl ? url($this->actionUrl) : url('/items'),
+                'buttonText' => $this->actionUrl ? 'Check Product' : 'Order Now'
+            ]);
     }
 
     /**
@@ -65,6 +64,7 @@ class PromotionBroadcastNotification extends Notification
             'title' => $this->messageTitle,
             'body' => $this->messageBody,
             'action_url' => $this->actionUrl,
+            'image_url' => $this->imageUrl,
             'type' => 'promotion',
         ];
     }

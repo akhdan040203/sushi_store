@@ -6,77 +6,9 @@
     <title>{{ $title ?? 'Admin Panel' }} - Sushi Store</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/css/admin.css', 'resources/js/app.js'])
     @livewireStyles
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #0f0f0f; color: #fff; min-height: 100vh; overflow-x: hidden; }
-        .admin-layout { display: flex; min-height: 100vh; }
-        
-        /* Sidebar */
-        .sidebar { 
-            width: 280px; 
-            background: #1a1a1a; 
-            border-right: 1px solid rgba(255,255,255,0.05); 
-            padding: 2rem 0; 
-            position: fixed; 
-            height: 100vh; 
-            overflow-y: auto; 
-            z-index: 1000;
-            transition: transform 0.3s ease-in-out;
-        }
-        .sidebar-header { padding: 0 1.5rem 2rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; }
-        .sidebar-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: white; }
-        .sidebar-logo svg { width: 40px; height: 40px; }
-        .sidebar-logo span { font-size: 1.5rem; font-weight: 700; letter-spacing: 2px; }
-        .sidebar-nav { padding: 0 1rem; }
-        .nav-section { margin-bottom: 2rem; }
-        .nav-section-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.4); padding: 0 0.75rem; margin-bottom: 0.75rem; }
-        .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.875rem 1rem; border-radius: 12px; color: rgba(255,255,255,0.7); text-decoration: none; transition: all 0.2s; margin-bottom: 0.25rem; }
-        .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
-        .nav-item.active { background: linear-gradient(135deg, #FF7A00, #FF9F43); color: white; box-shadow: 0 4px 15px rgba(255,122,0,0.3); }
-        .nav-item svg { width: 20px; height: 20px; }
-        .nav-item span { font-size: 0.9rem; font-weight: 500; }
-        
-        /* Main Content */
-        .main-content { flex: 1; margin-left: 280px; padding: 2rem; transition: margin-left 0.3s ease-in-out; }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; gap: 1rem; }
-        .page-title h1 { font-size: clamp(1.25rem, 5vw, 1.75rem); font-weight: 600; margin-bottom: 0.25rem; }
-        .page-title p { color: rgba(255,255,255,0.5); font-size: 0.9rem; }
-        .user-avatar { width: 45px; height: 45px; border-radius: 12px; background: linear-gradient(135deg, #FF7A00, #FF9F43); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1.1rem; flex-shrink: 0; }
-        
-        /* Mobile Toggle */
-        .mobile-toggle { display: none; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); color: white; padding: 0.5rem; border-radius: 8px; cursor: pointer; }
-        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 999; }
-        
-        /* Cards & Tables */
-        .admin-card { background: #1a1a1a; border-radius: 20px; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; }
-        .admin-table-container { overflow-x: auto; margin: 0 -1.5rem; padding: 0 1.5rem; }
-        .admin-table { width: 100%; border-collapse: collapse; white-space: nowrap; }
-        .admin-table th { text-align: left; padding: 1rem; color: rgba(255,255,255,0.5); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .admin-table td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 0.9rem; }
-        .admin-table tbody tr:hover { background: rgba(255,255,255,0.02); }
-        
-        /* Buttons */
-        .btn-primary { background: linear-gradient(135deg, #FF7A00, #FF9F43); color: white; padding: 0.75rem 1.5rem; border-radius: 12px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: none; cursor: pointer; white-space: nowrap; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,122,0,0.3); }
-        .btn-secondary { background: rgba(255,255,255,0.05); color: white; padding: 0.75rem 1.5rem; border-radius: 12px; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: 1px solid rgba(255,255,255,0.1); white-space: nowrap; }
-        
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .sidebar { transform: translateX(-100%); }
-            .sidebar.open { transform: translateX(0); }
-            .main-content { margin-left: 0; padding: 1.5rem; }
-            .mobile-toggle { display: flex; }
-            .overlay.open { display: block; }
-        }
-        
-        @media (max-width: 640px) {
-            .top-bar { flex-direction: column; align-items: flex-start; }
-            .top-bar .user-info { display: none; }
-            .admin-card { padding: 1rem; }
-        }
-    </style>
+    @stack('styles')
 </head>
 <body>
     <div class="overlay" id="overlay"></div>

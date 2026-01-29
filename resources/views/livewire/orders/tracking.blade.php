@@ -1,189 +1,8 @@
+@push('styles')
+    @vite('resources/css/tracking.css')
+@endpush
+
 <div class="tracking-page" wire:poll.3s>
-    <style>
-        .tracking-page {
-            background: #111;
-            min-height: 100vh;
-            padding: 4rem 5% 6rem;
-            color: white;
-        }
-
-        .tracking-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .tracking-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .tracking-header h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 2.5rem;
-            color: #FF7A00;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Progress Bar / Stepper */
-        .stepper {
-            display: flex;
-            justify-content: space-between;
-            position: relative;
-            margin-bottom: 4rem;
-            padding: 0 20px;
-        }
-
-        .stepper::before {
-            content: '';
-            position: absolute;
-            top: 25px;
-            left: 50px;
-            right: 50px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            z-index: 1;
-        }
-
-        .step-progress {
-            position: absolute;
-            top: 25px;
-            left: 50px;
-            height: 4px;
-            background: linear-gradient(to right, #FF7A00, #FF9F43);
-            z-index: 2;
-            transition: width 1s ease-in-out;
-        }
-
-        .step {
-            position: relative;
-            z-index: 3;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100px;
-        }
-
-        .step-icon {
-            width: 54px;
-            height: 54px;
-            border-radius: 50%;
-            background: #1a1a1a;
-            border: 4px solid #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
-            transition: all 0.5s;
-            color: rgba(255, 255, 255, 0.3);
-        }
-
-        .step.active .step-icon {
-            border-color: #FF7A00;
-            background: #FF7A00;
-            color: white;
-            box-shadow: 0 0 20px rgba(255, 122, 0, 0.4);
-        }
-
-        .step.completed .step-icon {
-            border-color: #22C55E;
-            background: #22C55E;
-            color: white;
-        }
-
-        .step-label {
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.4);
-            text-align: center;
-        }
-
-        .step.active .step-label, .step.completed .step-label {
-            color: white;
-        }
-
-        /* Order Details Card */
-        .order-status-card {
-            background: #1a1a1a;
-            border-radius: 24px;
-            padding: 2.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            text-align: center;
-        }
-
-        .status-hero {
-            margin-bottom: 2.5rem;
-        }
-
-        .status-main {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: white;
-        }
-
-        .status-desc {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 1rem;
-        }
-
-        .pulse-animation {
-            width: 12px;
-            height: 12px;
-            background: #FF7A00;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 8px;
-            box-shadow: 0 0 0 rgba(255, 122, 0, 0.4);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 122, 0, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 122, 0, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 122, 0, 0); }
-        }
-
-        .summary-mini {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .summary-item {
-            text-align: left;
-        }
-
-        .summary-label {
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.4);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.25rem;
-        }
-
-        .summary-value {
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .btn-back {
-            display: inline-block;
-            margin-top: 3rem;
-            color: rgba(255, 255, 255, 0.5);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s;
-        }
-
-        .btn-back:hover {
-            color: #FF7A00;
-        }
-    </style>
 
     <div class="tracking-container">
         <div class="tracking-header">
@@ -244,57 +63,57 @@
                 @endif
                 <div class="status-main">
                     @if($order->status == 'pending')
-                        Menunggu Konfirmasi
+                        Awaiting Confirmation
                     @elseif($order->status == 'processing')
-                        Sushimu Sedang Dibuat
+                        Sushis in the Making
                     @elseif($order->status == 'shipped')
-                        Pesanan Siap Diantar!
+                        Order is Ready!
                     @elseif($order->status == 'delivered')
-                        Selamat Menikmati!
+                        Enjoy Your Meal!
                     @elseif($order->status == 'cancelled')
-                        Pesanan Dibatalkan
+                        Order Cancelled
                     @endif
                 </div>
                 <div class="status-desc">
                     @if($order->status == 'pending')
-                        Kami sedang mengecek pesananmu segera.
+                        We are checking your order details.
                     @elseif($order->status == 'processing')
-                        Chef kami sedang meramu bahan-bahan segar untukmu.
+                        Our chef is handcrafting your sushi using fresh ingredients.
                     @elseif($order->status == 'shipped')
-                        Siapkan meja Anda, sushi favoritmu segera sampai.
+                        Your order is ready for pickup or service.
                     @elseif($order->status == 'delivered')
-                        Terima kasih telah memesan di Sushi Ecommerce.
+                        Thank you for choosing SushiYup.
                     @elseif($order->status == 'cancelled')
-                        Maaf, pesanan ini tidak dapat dilanjutkan.
+                        This order could not be processed.
                     @endif
                 </div>
             </div>
 
             <div class="summary-mini">
                 <div class="summary-item">
-                    <div class="summary-label">Estimasi Selesai</div>
+                    <div class="summary-label">Estimated Completion</div>
                     <div class="summary-value" style="color: #FF7A00;">
                         @if($order->status == 'processing')
-                            ~15-20 Menit
+                            ~15-20 Minutes
                         @elseif($order->status == 'shipped')
-                            Lagi Di Jalan
+                            Ready Now
                         @elseif($order->status == 'delivered')
-                            Selesai
+                            Completed
                         @else
-                            Menunggu...
+                            Awaiting...
                         @endif
                     </div>
                 </div>
                 <div class="summary-item" style="text-align: right;">
-                    <div class="summary-label">Total Pembayaran</div>
+                    <div class="summary-label">Total Payment</div>
                     <div class="summary-value">Rp {{ number_format($order->total, 0, ',', '.') }}</div>
                 </div>
                 <div class="summary-item">
-                    <div class="summary-label">Tipe Pesanan</div>
+                    <div class="summary-label">Order Type</div>
                     <div class="summary-value">{{ ucfirst(str_replace('_', ' ', $order->order_type)) }}</div>
                 </div>
                 <div class="summary-item" style="text-align: right;">
-                    <div class="summary-label">Nomor Meja</div>
+                    <div class="summary-label">Table Number</div>
                     <div class="summary-value">{{ $order->table_number ?? 'Takeaway' }}</div>
                 </div>
             </div>
@@ -302,7 +121,7 @@
 
         <div style="text-align: center;">
             <a href="{{ route('orders.history') }}" class="btn-back">
-                &larr; Kembali ke Riwayat Pesanan
+                &larr; Back to Order History
             </a>
         </div>
     </div>

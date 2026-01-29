@@ -8,10 +8,10 @@
     </div>
 
     <div class="admin-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-            <div style="position: relative; width: 300px;">
-                <input wire:model.live="search" type="text" placeholder="Search products..." class="form-input" style="padding-left: 2.5rem;">
-                <svg style="position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: rgba(255,255,255,0.4);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; gap: 1rem; flex-wrap: wrap;">
+            <div class="search-wrapper">
+                <input wire:model.live="search" type="text" placeholder="Search products..." class="form-input">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
             </div>
@@ -29,18 +29,19 @@
             </div>
         @endif
 
-        <table class="admin-table">
-            <thead>
-                <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                    <th>Status</th>
-                    <th style="text-align: right;">Actions</th>
-                </tr>
-            </thead>
+        <div class="admin-table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Status</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
             <tbody>
                 @forelse($products as $product)
                     <tr>
@@ -49,7 +50,12 @@
                         </td>
                         <td>
                             <div style="font-weight: 600;">{{ $product->name }}</div>
-                            <div style="color: rgba(255,255,255,0.5); font-size: 0.8rem;">{{ Str::limit($product->description, 40) }}</div>
+                            <div style="display: flex; gap: 0.5rem; margin-top: 4px;">
+                                @if($product->is_signature)
+                                    <span style="font-size: 0.65rem; background: rgba(34, 197, 94, 0.2); color: #4ADE80; padding: 2px 6px; border-radius: 4px; text-transform: uppercase;">Recommended</span>
+                                @endif
+                            </div>
+                            <div style="color: rgba(255,255,255,0.5); font-size: 0.8rem; margin-top: 4px;">{{ Str::limit($product->description, 40) }}</div>
                         </td>
                         <td>
                             <span style="background: rgba(255,122,0,0.15); color: #FF7A00; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem;">
@@ -87,6 +93,7 @@
                 @endforelse
             </tbody>
         </table>
+    </div>
 
         @if($products->hasPages())
             <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05);">

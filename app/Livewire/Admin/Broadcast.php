@@ -6,20 +6,25 @@ use App\Models\User;
 use App\Notifications\PromotionBroadcastNotification;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Notification;
 
 #[Layout('components.admin-layout')]
 class Broadcast extends Component
 {
+    use WithFileUploads;
+
     public $title = '';
     public $body = '';
     public $target = 'all_customers'; // all_customers, all_users
     public $actionUrl = '';
+    public $image;
 
     protected $rules = [
         'title' => 'required|min:5',
         'body' => 'required|min:10',
         'target' => 'required',
+        'image' => 'nullable|image|max:2048', // 2MB Max
     ];
 
     public function send()
@@ -40,11 +45,21 @@ class Broadcast extends Component
             return;
         }
 
-        Notification::send($users, new PromotionBroadcastNotification($this->title, $this->body, $this->actionUrl));
+        $imagePath = null;
+        if ($this->image) {
+            $imagePath = $this->image->store('promotions', 'public');
+        }
+
+        Notification::send($users, new PromotionBroadcastNotification(
+            $this->title, 
+            $this->body, 
+            $this->actionUrl,
+            $imagePath
+        ));
 
         session()->flash('success', 'Promotion broadcast sent to ' . $users->count() . ' users!');
         
-        $this->reset(['title', 'body', 'actionUrl']);
+        $this->reset(['title', 'body', 'actionUrl', 'image']);
     }
 
     public function render()

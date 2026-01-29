@@ -16,12 +16,12 @@
         <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
     </div>
 
-    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem;">
+    <div class="grid-2-1">
         <!-- Order Items & Customer Details -->
         <div style="display: flex; flex-direction: column; gap: 1.5rem;">
             <div class="admin-card">
                 <h3 style="margin-bottom: 1.5rem; color: #FF7A00; font-size: 1.1rem;">Customer & Preparation Information</h3>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div class="grid-2">
                     <div>
                         <div style="color: rgba(255,255,255,0.5); font-size: 0.8rem; margin-bottom: 0.25rem;">Customer Name</div>
                         <div style="font-weight: 600; font-size: 1rem;">{{ $order->customer_name }}</div>

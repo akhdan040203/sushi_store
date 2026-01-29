@@ -36,7 +36,13 @@ new #[Layout('layouts.guest')] class extends Component
     }
 }; ?>
 
-<div>
+<div style="position: relative;">
+    {{-- Loading Overlay --}}
+    <div wire:loading wire:target="register" class="auth-loading-overlay">
+        <div class="loader-v5"></div>
+        <div class="loading-text">Preparing your journey...</div>
+    </div>
+
     <h2 class="auth-title">Create Account</h2>
     <p class="auth-subtitle">Join us for the ultimate sushi experience</p>
 

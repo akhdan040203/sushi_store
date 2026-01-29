@@ -128,6 +128,7 @@ class Checkout extends Component
             ];
 
             $this->snapToken = Snap::getSnapToken($params);
+            $order->update(['snap_token' => $this->snapToken]);
 
             DB::commit();
 

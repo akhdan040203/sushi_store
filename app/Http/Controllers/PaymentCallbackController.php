@@ -22,7 +22,9 @@ class PaymentCallbackController extends Controller
         try {
             $notification = new Notification();
 
-            $orderNumber = $notification->order_id;
+            $rawOrderNumber = $notification->order_id;
+            // Clean suffix if present (e.g., ORD20240101ABCD-123456789)
+            $orderNumber = explode('-', $rawOrderNumber)[0];
             $transactionStatus = $notification->transaction_status;
             $paymentType = $notification->payment_type;
             $fraudStatus = $notification->fraud_status;

@@ -23,7 +23,7 @@ class Edit extends Component
     public $price;
     public $new_image;
     public $stock;
-    public $is_featured;
+    public $is_signature;
     public $is_active;
 
     public function mount($id)
@@ -35,7 +35,7 @@ class Edit extends Component
         $this->description = $this->product->description;
         $this->price = $this->product->price;
         $this->stock = $this->product->stock;
-        $this->is_featured = $this->product->is_featured;
+        $this->is_signature = $this->product->is_signature;
         $this->is_active = $this->product->is_active;
     }
 
@@ -62,7 +62,7 @@ class Edit extends Component
             'description' => $this->description,
             'price' => $this->price,
             'stock' => $this->stock,
-            'is_featured' => $this->is_featured,
+            'is_signature' => $this->is_signature,
             'is_active' => $this->is_active,
         ];
 
@@ -73,7 +73,7 @@ class Edit extends Component
             }
             
             $imagePath = $this->new_image->store('products', 'public');
-            $data['image'] = 'storage/' . $imagePath;
+            $data['image'] = $imagePath;
         }
 
         $this->product->update($data);

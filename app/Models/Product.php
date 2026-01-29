@@ -17,7 +17,7 @@ class Product extends Model
         'stock',
         'rating',
         'rating_count',
-        'is_featured',
+        'is_signature',
         'is_active',
     ];
 
@@ -25,7 +25,7 @@ class Product extends Model
         'price' => 'decimal:2',
         'discount_price' => 'decimal:2',
         'rating' => 'decimal:1',
-        'is_featured' => 'boolean',
+        'is_signature' => 'boolean',
         'is_active' => 'boolean',
     ];
 
@@ -69,5 +69,28 @@ class Product extends Model
     public function getInStockAttribute()
     {
         return $this->stock > 0;
+    }
+
+    // Get the full URL for the product image
+    public function getImageUrlAttribute()
+    {
+        if (!$this->image) {
+            return asset('images/placeholder.png');
+        }
+
+        if (filter_var($this->image, FILTER_VALIDATE_URL)) {
+            return $this->image;
+        }
+
+        if (str_starts_with($this->image, 'images/')) {
+            return asset($this->image);
+        }
+
+        // Handle case where path already starts with storage/
+        if (str_starts_with($this->image, 'storage/')) {
+            return asset($this->image);
+        }
+
+        return asset('storage/' . $this->image);
     }
 }

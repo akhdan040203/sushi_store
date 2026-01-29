@@ -1,293 +1,24 @@
+@push('styles')
+    @vite('resources/css/checkout.css')
+@endpush
+
 <div class="checkout-page">
-    <style>
-        .checkout-page {
-            background: #111;
-            min-height: 100vh;
-            padding: 4rem 5% 6rem;
-            color: white;
-        }
-
-        .checkout-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 3rem;
-        }
-
-        .checkout-header {
-            grid-column: 1 / -1;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .checkout-header h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .checkout-section {
-            background: #1a1a1a;
-            border-radius: 24px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 1rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 1rem 1.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: white;
-            outline: none;
-            transition: all 0.3s;
-            font-family: inherit;
-        }
-
-        .form-group input:focus, .form-group select:focus {
-            border-color: var(--vibrant-orange);
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .type-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .type-btn {
-            padding: 1rem;
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .type-btn.active {
-            border-color: var(--vibrant-orange);
-            background: rgba(255, 122, 0, 0.1);
-            color: var(--vibrant-orange);
-        }
-
-        .type-btn svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        /* Order Summary Box */
-        .summary-box {
-            position: sticky;
-            top: 100px;
-            height: fit-content;
-        }
-
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .summary-total {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--vibrant-orange);
-        }
-
-        .checkout-btn {
-            width: 100%;
-            padding: 1.25rem;
-            background: var(--vibrant-orange);
-            color: white;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 2rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .checkout-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(255, 122, 0, 0.3);
-        }
-
-        .item-row {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .item-img {
-            width: 60px;
-            height: 60px;
-            border-radius: 10px;
-            object-fit: cover;
-        }
-
-        .item-info {
-            flex: 1;
-        }
-
-        .item-info h4 {
-            font-size: 0.95rem;
-            font-weight: 500;
-            margin-bottom: 0.2rem;
-        }
-
-        .item-info span {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        /* Promo Modal */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-        }
-
-        .promo-modal {
-            background: #1a1a1a;
-            width: 90%;
-            max-width: 550px;
-            border-radius: 30px;
-            padding: 3rem;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .promo-modal::before {
-            content: '';
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 150px;
-            height: 150px;
-            background: var(--vibrant-orange);
-            filter: blur(80px);
-            opacity: 0.3;
-        }
-
-        .promo-icon {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-            display: block;
-        }
-
-        .promo-modal h2 {
-            font-family: 'Cinzel', serif;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            color: white;
-        }
-
-        .promo-modal p {
-            color: rgba(255,255,255,0.7);
-            line-height: 1.7;
-            margin-bottom: 2.5rem;
-        }
-
-        .promo-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .login-promo-btn {
-            background: white;
-            color: #111;
-            padding: 1rem;
-            border-radius: 15px;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .login-promo-btn:hover {
-            background: var(--vibrant-orange);
-            color: white;
-        }
-
-        .guest-promo-btn {
-            background: transparent;
-            color: rgba(255,255,255,0.5);
-            padding: 1rem;
-            border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.1);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .guest-promo-btn:hover {
-            color: white;
-            border-color: white;
-        }
-
-        @media (max-width: 992px) {
-            .checkout-container {
-                grid-template-columns: 1fr;
-            }
-            .summary-box {
-                position: static;
-            }
-        }
-    </style>
 
     <div class="checkout-header">
         <h1>CHECKOUT</h1>
         <p>Complete your order to enjoy our fresh sushi</p>
+    </div>
+
+    <div class="checkout-container">
+        <div class="portfolio-notice">
+            <svg style="width: 32px; height: 32px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+            <p>
+                <strong>Portfolio Project:</strong> Website ini hanya untuk demonstrasi. Pembayaran menggunakan <strong>Midtrans Sandbox</strong> (Simulasi). 
+                Gunakan <a href="https://docs.midtrans.com/en/technical-reference/sandbox-test-variables" target="_blank">Midtrans Payment Simulator</a> untuk mencoba pembayaran.
+            </p>
+        </div>
     </div>
 
     <div class="checkout-container" style="grid-column: 1 / -1; margin-bottom: 2rem;">
@@ -391,13 +122,13 @@
     <div class="modal-overlay">
         <div class="promo-modal">
             <span class="promo-icon">🍱</span>
-            <h2>Satu Langkah Lagi!</h2>
-            <p>Tahukah kamu? Member Sushi kami mendapatkan bonus <strong>Gratis 1 Plate Sushi</strong> setiap kali order.<br><br>Kamu ingin lanjut bayar sebagai tamu atau gabung member sekarang untuk klaim bonusnya?</p>
+            <h2>Just One More Step!</h2>
+            <p>Did you know? Our Sushi Members get a <strong>FREE Sushi Plate</strong> bonus with every order.<br><br>Would you like to pay as a guest, or join as a member now to claim your bonus?</p>
             
             <div class="promo-actions">
-                <a href="{{ route('register') }}" class="login-promo-btn">DAFTAR SEKARANG & AMBIL BONUS</a>
+                <a href="{{ route('register') }}" class="login-promo-btn">JOIN NOW & CLAIM BONUS</a>
                 <button class="guest-promo-btn" wire:click="processOrder" wire:loading.attr="disabled">
-                    <span wire:loading.remove wire:target="processOrder">Tetap Bayar sebagai Tamu</span>
+                    <span wire:loading.remove wire:target="processOrder">Continue Paying as Guest</span>
                     <span wire:loading wire:target="processOrder">Processing...</span>
                 </button>
             </div>
@@ -405,38 +136,6 @@
     </div>
     @endif
 
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
-    <script>
-        window.addEventListener('payment-ready', event => {
-            console.log('Payment ready event received!', event.detail);
-            const data = event.detail[0];
-            
-            if (!data.snapToken) {
-                console.error('No snap token found!');
-                alert('Internal Error: Snap Token missing.');
-                return;
-            }
-
-            snap.pay(data.snapToken, {
-                onSuccess: function(result) {
-                    console.log('Payment success:', result);
-                    window.location.href = "/orders/track/" + data.orderNumber;
-                },
-                onPending: function(result) {
-                    console.log('Payment pending:', result);
-                    window.location.href = "/orders/track/" + data.orderNumber;
-                },
-                onError: function(result) {
-                    console.error('Payment error:', result);
-                    alert("Payment failed!");
-                },
-                onClose: function() {
-                    console.log('Customer closed the popup');
-                    alert('You closed the popup without finishing the payment');
-                }
-            });
-        });
-    </script>
 </div>
 
 

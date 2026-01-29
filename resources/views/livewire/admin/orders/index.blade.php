@@ -8,11 +8,11 @@
     </div>
 
     <div class="admin-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; gap: 1rem; flex-wrap: wrap;">
-            <div style="display: flex; gap: 1rem; flex: 1;">
-                <div style="position: relative; width: 300px;">
-                    <input wire:model.live="search" type="text" placeholder="Search order # or customer..." class="form-input" style="padding-left: 2.5rem;">
-                    <svg style="position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: rgba(255,255,255,0.4);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; gap: 1rem; flex-wrap: wrap;">
+            <div style="display: flex; gap: 1rem; flex: 1; flex-wrap: wrap;">
+                <div class="search-wrapper">
+                    <input wire:model.live="search" type="text" placeholder="Search order # or customer..." class="form-input">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                     </svg>
                 </div>
@@ -33,7 +33,7 @@
             </div>
         @endif
 
-        <div style="overflow-x: auto;">
+        <div class="admin-table-container">
             <table class="admin-table">
                 <thead>
                     <tr>

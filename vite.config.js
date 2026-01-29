@@ -6,7 +6,14 @@ export default defineConfig({
     plugins: [
         tailwindcss(),
         laravel({
-            input: ['resources/css/app.css', 'resources/css/welcome.css', 'resources/js/app.js'],
+            input: [
+                'resources/css/app.css',
+                'resources/css/welcome.css',
+                'resources/css/homepage-v5.css',
+                'resources/css/service.css',
+                'resources/js/app.js',
+                'resources/js/homepage.js'
+            ],
             refresh: true,
         }),
     ],

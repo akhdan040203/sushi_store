@@ -8,10 +8,10 @@
     </div>
 
     <div class="admin-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-            <div style="position: relative; width: 300px;">
-                <input wire:model.live.debounce.300ms="search" type="text" placeholder="Search categories..." class="form-input" style="padding-left: 2.5rem;">
-                <svg style="position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: rgba(255,255,255,0.4);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; gap: 1rem; flex-wrap: wrap;">
+            <div class="search-wrapper">
+                <input wire:model.live.debounce.300ms="search" type="text" placeholder="Search categories..." class="form-input">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
             </div>
@@ -35,17 +35,18 @@
             </div>
         @endif
 
-        <table class="admin-table">
-            <thead>
-                <tr>
-                    <th>Icon</th>
-                    <th>Name</th>
-                    <th>Slug</th>
-                    <th>Products</th>
-                    <th>Status</th>
-                    <th style="text-align: right;">Actions</th>
-                </tr>
-            </thead>
+        <div class="admin-table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Icon</th>
+                        <th>Name</th>
+                        <th>Slug</th>
+                        <th>Products</th>
+                        <th>Status</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
             <tbody>
                 @forelse($categories as $category)
                     <tr>
@@ -89,6 +90,7 @@
                 @endforelse
             </tbody>
         </table>
+    </div>
 
         @if($categories->hasPages())
             <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05);">

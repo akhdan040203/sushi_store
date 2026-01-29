@@ -1,20 +1,10 @@
 <div class="product-detail-page">
-    @vite(['resources/css/welcome.css'])
     
-    <!-- Breadcrumb -->
-    <nav class="breadcrumb">
-        <a href="/">Home</a>
-        <span>/</span>
-        <a href="/#menu">Menu</a>
-        <span>/</span>
-        <span>{{ $product->name }}</span>
-    </nav>
-
     <div class="product-detail-container">
         <!-- Product Image -->
         <div class="product-image-section">
             <div class="product-main-image">
-                <img src="{{ asset($product->image ?? 'images/placeholder.png') }}" alt="{{ $product->name }}">
+                <img src="{{ $product->image_url }}" alt="{{ $product->name }}">
                 @if($product->has_discount)
                     <span class="discount-badge">-{{ $product->discount_percentage }}%</span>
                 @endif
@@ -23,10 +13,6 @@
 
         <!-- Product Info -->
         <div class="product-info-section">
-            <div class="product-category-tag">
-                <span>{{ $product->category->name ?? 'Uncategorized' }}</span>
-            </div>
-            
             <h1 class="product-title">{{ $product->name }}</h1>
             
             <div class="product-rating">
@@ -46,7 +32,7 @@
             </div>
 
             <p class="product-description">
-                {{ $product->description ?? 'Premium sushi terbuat dari bahan-bahan segar berkualitas tinggi, disiapkan oleh koki berpengalaman dengan teknik tradisional Jepang.' }}
+                {{ $product->description ?? 'Premium sushi made from high-quality fresh ingredients, prepared by experienced chefs using traditional Japanese techniques.' }}
             </p>
 
             <div class="product-stock">
@@ -55,16 +41,16 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="20 6 9 17 4 12"/>
                         </svg>
-                        Tersedia ({{ $product->stock }} pcs)
+                        Available ({{ $product->stock }} pcs)
                     </span>
                 @else
-                    <span class="out-of-stock">Stok Habis</span>
+                    <span class="out-of-stock">Out of Stock</span>
                 @endif
             </div>
 
             @if($product->in_stock)
                 <div class="quantity-section">
-                    <label>Jumlah:</label>
+                    <label>Quantity:</label>
                     <div class="quantity-selector">
                         <button wire:click="decrementQuantity" class="qty-btn" {{ $quantity <= 1 ? 'disabled' : '' }}>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -81,26 +67,15 @@
                     </div>
                 </div>
 
-                <div class="product-actions">
-                    <button wire:click="addToCart" class="add-to-cart-btn"
+                <div class="product-actions" style="margin-top: 2rem;">
+                    <button wire:click="addToCart" class="add-cart-btn-text"
                         @if(auth()->check() && auth()->user()->isAdmin())
                         disabled
                         style="opacity: 0.5; cursor: not-allowed;"
-                        title="Admin tidak dapat melakukan pemesanan"
+                        title="Admins cannot place orders"
                         @endif
                     >
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M6 6h15l-1.5 9h-12z"/>
-                            <circle cx="9" cy="20" r="1"/>
-                            <circle cx="18" cy="20" r="1"/>
-                            <path d="M6 6L5 2H2"/>
-                        </svg>
-                        Tambah ke Keranjang
-                    </button>
-                    <button class="wishlist-btn" title="Tambah ke Wishlist">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                        </svg>
+                        ADD TO CART
                     </button>
                 </div>
             @endif
@@ -110,12 +85,12 @@
     <!-- Related Products -->
     @if(count($relatedProducts) > 0)
         <section class="related-products">
-            <h2>Produk Serupa</h2>
+            <h2>Related Products</h2>
             <div class="related-grid">
                 @foreach($relatedProducts as $relatedProduct)
                     <a href="/product/{{ $relatedProduct->slug }}" class="related-card" wire:navigate>
                         <div class="related-image">
-                            <img src="{{ asset($relatedProduct->image ?? 'images/placeholder.png') }}" alt="{{ $relatedProduct->name }}">
+                            <img src="{{ $relatedProduct->image_url }}" alt="{{ $relatedProduct->name }}">
                         </div>
                         <div class="related-info">
                             <h4>{{ $relatedProduct->name }}</h4>

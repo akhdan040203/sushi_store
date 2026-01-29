@@ -7,6 +7,11 @@ use App\Http\Controllers\PaymentCallbackController;
 
 Route::get('/', [HomeController::class, 'index']);
 
+Route::post('/logout', function (\App\Livewire\Actions\Logout $logout) {
+    $logout();
+    return redirect('/');
+})->name('logout');
+
 Route::post('/payment/callback', [PaymentCallbackController::class, 'receive']);
 
 // Product Detail Page
@@ -27,8 +32,8 @@ Route::get('/orders/track/{orderNumber}', \App\Livewire\Orders\Tracking::class)
     ->middleware(['auth'])
     ->name('orders.track');
 
-// About Us Page
-Route::view('/about', 'about')->name('about');
+// Service Page
+Route::view('/service', 'service')->name('service');
 
 Route::get('dashboard', [AdminDashboardController::class, 'index'])
     ->middleware(['auth', 'verified', 'admin'])

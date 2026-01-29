@@ -20,7 +20,7 @@ class Create extends Component
     public $price;
     public $image;
     public $stock = 0;
-    public $is_featured = false;
+    public $is_signature = false;
     public $is_active = true;
 
     protected $rules = [
@@ -44,9 +44,9 @@ class Create extends Component
             'slug' => Str::slug($this->name),
             'description' => $this->description,
             'price' => $this->price,
-            'image' => 'storage/' . $imagePath,
+            'image' => $imagePath,
             'stock' => $this->stock,
-            'is_featured' => $this->is_featured,
+            'is_signature' => $this->is_signature,
             'is_active' => $this->is_active,
         ]);
 
