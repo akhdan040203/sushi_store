@@ -3,7 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $title ?? 'Sushi Ecommerce' }}</title>
+    <title>{{ $title ?? 'SushiYup' }}</title>
+    
+    <!-- Favicon - SushiYup Logo -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='11' fill='%23FF7A00'/%3E%3Cellipse cx='12' cy='12' rx='7' ry='3.5' fill='%23111'/%3E%3Ccircle cx='9.5' cy='11' r='1.5' fill='white'/%3E%3C/svg%3E">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
