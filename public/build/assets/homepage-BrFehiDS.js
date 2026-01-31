@@ -1,0 +1,1 @@
+window.scrollSlider=function(o){const t=document.getElementById("productSlider");if(!t)return;const r=t.querySelector(".v5-card");if(!r)return;const c=r.offsetWidth+30;t.scrollBy({left:o*c,behavior:"smooth"})};

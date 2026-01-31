@@ -1,0 +1,59 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-YU8ut8dS.css",
+    "src": "resources/css/app.css",
+    "isEntry": true,
+    "name": "app",
+    "names": [
+      "app.css"
+    ]
+  },
+  "resources/css/homepage-v5.css": {
+    "file": "assets/homepage-v5-B26iZbLF.css",
+    "src": "resources/css/homepage-v5.css",
+    "isEntry": true,
+    "name": "homepage-v5",
+    "names": [
+      "homepage-v5.css"
+    ]
+  },
+  "resources/css/profile-menu.css": {
+    "file": "assets/profile-menu-B7nCN3e2.css",
+    "src": "resources/css/profile-menu.css",
+    "isEntry": true,
+    "name": "profile-menu",
+    "names": [
+      "profile-menu.css"
+    ]
+  },
+  "resources/css/service.css": {
+    "file": "assets/service-ByTa7sXz.css",
+    "src": "resources/css/service.css",
+    "isEntry": true,
+    "name": "service",
+    "names": [
+      "service.css"
+    ]
+  },
+  "resources/css/welcome.css": {
+    "file": "assets/welcome-BYoo4ZM4.css",
+    "src": "resources/css/welcome.css",
+    "isEntry": true,
+    "name": "welcome",
+    "names": [
+      "welcome.css"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-CAiCLEjY.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/homepage.js": {
+    "file": "assets/homepage-BrFehiDS.js",
+    "name": "homepage",
+    "src": "resources/js/homepage.js",
+    "isEntry": true
+  }
+}
