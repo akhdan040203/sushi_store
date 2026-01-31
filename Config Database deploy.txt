@@ -1,3 +1,3 @@
-username mysal : sushiyup
+username mysal : sushiuser
 database name : sushi_ecomerce
 password : @Akhdanfauzys040203 (Password Acount Databse, login dengan username mysl username)
